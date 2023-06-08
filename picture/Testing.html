@@ -100,7 +100,7 @@
 			var reuslt = [];
 			var iMax = -100;
 			for(var food in foodScore) {
-				
+				console.log(foodScore[food]);
 				if(foodScore[food] > iMax) {
 					result = [food];
 					iMax = foodScore[food];
@@ -109,6 +109,7 @@
 					result.push(food);
 				}
 			}
+
 			console.log(result);
 			return result[getRandomInt(0,result.length)];
 		}
