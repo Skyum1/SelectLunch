@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!--
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+-->
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<style>
+	
+	body {
+		background-image: linear-gradient(
+		rgba(255, 255, 255, 0.5),
+        rgba(255, 255, 255, 0.5)
+      ), url('../image/MainImg.png');
+	}
+	.title {
+		font-size: 70px;
+		text-align: center;
+		margin-bottom: 10px;
+		font-weight: bold;
+	}
+	
+	th, td {
+	  border: 1px solid black;
+	  border-radius: 5px;
+	}
+	
+	.tbRank {
+		font-size: 45px;
+	}
+	.rownum, .score, .inputdt {
+		text-align: center;
+	}	
+	
+	.goMain {
+			text-align: center;
+			position: relative;
+			top: 30px;
+		}
+	
+	</style>
+</head>
+<body>
+
+    <script>
+		
+		$(document).ready(function () {
+		
+			$.ajax({
+				url: "../php/selectRank.php",
+				type: "get",
+			}).done(function(data) {
+				printResult(data);
+			});
+				
+			$(".goMain").click(function () {
+				location.replace('../index.html');
+			});
+			
+		});
+		
+		function printResult(data) {
+		
+			var json = JSON.parse(data);
+			var str = "";
+			for(var i = 0; i < json.length; i++) {
+
+				str += "<tr>";
+				str += "<td class='rownum'>" + json[i]["rownum"] + "</td>";
+				str += "<td class='name'><a href=Result.html?Result=" + json[i]["name"] + ">" +json[i]["name"] + "</a></td>";
+				str += "<td class='score'>" + json[i]["resultCnt"] + "</td>";
+				str += "</tr>";
+			}
+			
+			$(".tbRank").append(str);
+		}
+	
+    </script>
+
+	<div class="title">
+		순위표
+	</div>
+	<div class="tableRank" border:1>
+		<table class="tbRank">
+			<th style="width:15%;"> 순위 </th>
+			<th style="width:60%;"> 이름 </th>
+			<th style="width:25%;"> 선택된 횟수 </th>
+		</table>
+	</div>
+	
+	<div class="goMain">
+		<img src="../image/goMain.png" alt="goMain">
+	</div>
+	
+</body>
+</html>

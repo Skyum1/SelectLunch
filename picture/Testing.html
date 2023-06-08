@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script src="Testing.js"></script>
+	<style>
+		.questionIndex {
+			font-size: 70px;
+			text-align: center;
+			margin-bottom: 10px;
+			font-weight: bold;
+		}
+
+		.quest {
+			font-size: 45px;
+			text-align: center;
+			font-family: sans-serif;
+			padding: 20px 20px 20px 20px;
+		}
+		
+		.btnYes {
+			float: left;
+		}
+
+		.btnNo {
+			float: left;
+		}
+	</style>
+</head>
+<body>
+
+    <script>
+		
+		// 질문리스트
+		var listQuestion = setQuestion();
+		// 질문 번호
+		var questIdx = 0;
+
+		// 음식 점수
+		var foodScore = {};
+
+		// 강아지 명단 및 점수
+		var dictFood = foodList();
+
+		$(document).ready(function () {
+			//total = getParameters("totalScore");
+
+			$(".btnYes").click(function () {
+				sumScore(true);
+				SetQuest();
+			});
+
+			$(".btnNo").click(function () {
+				sumScore(false);
+				SetQuest();
+			});
+
+			InitScore();
+			SetQuest();
+			
+		});
+	
+		// 점수 초기화
+		function InitScore() {
+			for(var food in dictFood) {
+				foodScore[food] = 0;
+			}
+		}
+
+		// 질문 세팅
+		function SetQuest() {
+
+			if(questIdx == listQuestion.length) {
+				alert("오늘의 메뉴는!!! " + GetReuslt());
+
+				window.close();
+				return;
+			}
+
+			$(".quest").html(listQuestion[questIdx]);
+
+			questIdx++;
+			$(".questionIndex").html("질문 " + questIdx);
+		}
+
+		// 점수 합산
+		function sumScore(answer) {
+			var iIndex = 1;
+			if(answer) iIndex = 0;
+
+			for(var food in dictFood) {
+				var listScore = dictFood[food][questIdx-1].split(",");
+				foodScore[food] += Number(listScore[iIndex]);
+			}
+		}
+
+		// 최종 결과 구하기
+		function GetReuslt() {
+
+			var reuslt = [];
+			var iMax = -100;
+			for(var food in foodScore) {
+				
+				if(foodScore[food] > iMax) {
+					result = [food];
+					iMax = foodScore[food];
+				}
+				else if (foodScore[food] == iMax) {
+					result.push(food);
+				}
+			}
+			console.log(result);
+			return result[getRandomInt(0,result.length)];
+		}
+
+		var getParameters = function (paramName) {
+			// 리턴값을 위한 변수 선언
+			var returnValue;
+
+			// 현재 URL 가져오기
+			var url = location.href;
+
+			// get 파라미터 값을 가져올 수 있는 ? 를 기점으로 slice 한 후 split 으로 나눔
+			var parameters = (url.slice(url.indexOf('?') + 1, url.length)).split('&');
+
+			// 나누어진 값의 비교를 통해 paramName 으로 요청된 데이터의 값만 return
+			for (var i = 0; i < parameters.length; i++) {
+				var varName = parameters[i].split('=')[0];
+				if (varName.toUpperCase() == paramName.toUpperCase()) {
+					returnValue = parameters[i].split('=')[1];
+					return decodeURIComponent(returnValue);
+				}
+			}
+		};
+
+		// 최소값, 최대값 입력하여 랜덤값 생성
+		function getRandomInt(min,max) {
+			min = Math.ceil(min);
+			max = Math.floor(max);
+			return Math.floor(Math.random() * (max - min)) + min;
+		}
+    </script>
+
+	<div class="back">
+		<div class="questionIndex">
+			질문 1
+		</div>
+		
+		<div class="quest">
+			
+		</div>
+
+		<div class="btnYes">
+			<img src="../image/Yes.png" alt="Play">
+		</div>
+		<div class="btnNo">
+			<img src="../image/No.png" alt="Play">
+		</div>
+	</div>
+	
+</body>
+</html>
